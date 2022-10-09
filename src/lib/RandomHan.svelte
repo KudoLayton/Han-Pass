@@ -101,7 +101,7 @@
 </div>
 <label for="wordNumInput">단어 개수</label>
 <input type="number" min="1" id="wordNumInput" bind:value={wordNum} on:change={generateHangulPasswd}>
-<label for="spaceStrInput">공백 문자</label>
+<label for="spaceStrInput">구분 문자</label>
 <input type="text" id="spaceStrInput" bind:value={spaceStr} on:change={generateHangulPasswd}>
 <button class="button" on:click={generateHangulPasswd}>생성</button>
 <h2>생성 비밀번호</h2>
