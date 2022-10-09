@@ -12,5 +12,5 @@
         "48": "icon/icon-48.png",
         "128": "icon/icon-128.png"
     },
-    "manifest_version": 2
+    "manifest_version": 3
   }
