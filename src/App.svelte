@@ -2,6 +2,7 @@
   import svelteLogo from './assets/svelte.svg'
   import Counter from './lib/Counter.svelte'
   import Han2Eng from './lib/Han2Eng.svelte'
+    import RandomHan from './lib/RandomHan.svelte';
 </script>
 
 <main>
@@ -18,6 +19,7 @@
   <div class="card">
     <Counter />
     <Han2Eng />
+    <RandomHan />
   </div>
 
   <p>
