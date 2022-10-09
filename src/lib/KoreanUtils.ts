@@ -1,41 +1,38 @@
-export{splitKoreanPhoneme, mergeKoreanPhoneme, transAdjective, transConnectedAdjective, Han2Eng}
-
 //ㄱ,ㄲ,ㄴ,ㄷ,ㄸ,ㄹ, ㅁ, ㅂ, ㅃ, ㅅ, ㅆ,  o,  ㅈ, ㅉ, ㅊ, ㅋ, ㅌ,  ㅍ, ㅎ
-let firstCode2Consonant: number[] = [0, 1, 3, 6, 7, 8, 16, 17, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
+const firstCode2Consonant: number[] = [0, 1, 3, 6, 7, 8, 16, 17, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
 //ㄱ ㄲ ㄳ ㄴ ㄵ ㄶ  ㄷ ㄹ ㄺ  ㄻ  ㄼ  ㄽ  ㄾ  ㄿ   ㅀ  ㅁ  ㅂ  ㅄ  ㅅ  ㅆ   ㅇ  ㅈ  ㅊ  ㅋ  ㅌ  ㅍ   ㅎ
-let thirdCode2Consonanat: number[] = [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29];
-const hangulCombStart = "가".charCodeAt(0);
-const hangulCombEnd = "힣".charCodeAt(0);
-const hangulConsonentStart = "ㄱ".charCodeAt(0);
-const hangulVowelStart = "ㅏ".charCodeAt(0);
+const thirdCode2Consonanat: number[] = [0, 1, 2, 3, 4, 5, 6, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 19, 20, 21, 22, 23, 25, 26, 27, 28, 29];
+const hangulCombStart = '가'.charCodeAt(0);
+const hangulCombEnd = '힣'.charCodeAt(0);
+const hangulConsonentStart = 'ㄱ'.charCodeAt(0);
+const hangulVowelStart = 'ㅏ'.charCodeAt(0);
 
 // 음운 단위로 분리
-function splitKoreanPhoneme (inChar: string){
-
-   let out: string = "";
-   let ch = inChar.charAt(0);
-   let charCode = inChar.charCodeAt(0);
+function splitKoreanPhoneme(inChar: string){
+   let out = '';
+   const ch = inChar.charAt(0);
+   const charCode = inChar.charCodeAt(0);
    if ((charCode >= hangulCombStart) && (charCode <= hangulCombEnd)) {
-       let charCodeOffset = charCode - hangulCombStart;
+       const charCodeOffset = charCode - hangulCombStart;
 
        // 초성
-       let firstCodeIndex = Math.floor(charCodeOffset / (21 * 28));
-       let firstCode = firstCode2Consonant[firstCodeIndex] + hangulConsonentStart;
-       let firstChar = String.fromCharCode(firstCode);
+       const firstCodeIndex = Math.floor(charCodeOffset / (21 * 28));
+       const firstCode = firstCode2Consonant[firstCodeIndex] + hangulConsonentStart;
+       const firstChar = String.fromCharCode(firstCode);
        out += firstChar
 
        // 중성
-       let secondCode = Math.floor(charCodeOffset / 28) % 21 + hangulVowelStart;
-       let secondChar = String.fromCharCode(secondCode);
+       const secondCode = Math.floor(charCodeOffset / 28) % 21 + hangulVowelStart;
+       const secondChar = String.fromCharCode(secondCode);
        out += secondChar
 
        // 종성
-       let thirdIndex = charCodeOffset % 28;
+       const thirdIndex = charCodeOffset % 28;
 
        // 종성이 있는 경우
        if (thirdIndex > 0) {
-           let thirdCode = thirdCode2Consonanat[thirdIndex - 1] + hangulConsonentStart;
-           let thirdChar = String.fromCharCode(thirdCode);
+           const thirdCode = thirdCode2Consonanat[thirdIndex - 1] + hangulConsonentStart;
+           const thirdChar = String.fromCharCode(thirdCode);
            out += thirdChar
        }
    }else{
@@ -48,14 +45,14 @@ function splitKoreanPhoneme (inChar: string){
 function mergeKoreanPhoneme (inStr: string){
    const checkPhonemeRegex = new RegExp(/^[ㄱ-ㅎ][ㅏ-ㅣ][ㄱ-ㅎ]*$/g);
    if(checkPhonemeRegex.exec(inStr)){
-       let firstIndex = firstCode2Consonant.indexOf(inStr.charCodeAt(0) - hangulConsonentStart);
-       let secondIndex = inStr.charCodeAt(1) - hangulVowelStart;
+       const firstIndex = firstCode2Consonant.indexOf(inStr.charCodeAt(0) - hangulConsonentStart);
+       const secondIndex = inStr.charCodeAt(1) - hangulVowelStart;
        let thirdIndex = 0;
        if (inStr.length > 2){
            thirdIndex = thirdCode2Consonanat.indexOf(inStr.charCodeAt(2) - hangulConsonentStart) + 1;
        }
        if(firstIndex !== undefined && secondIndex !== undefined && thirdIndex !== undefined){
-           let outCode = firstIndex * 21 * 28 + secondIndex * 28 + thirdIndex + hangulCombStart;
+           const outCode = firstIndex * 21 * 28 + secondIndex * 28 + thirdIndex + hangulCombStart;
            return String.fromCharCode(outCode);
        }else{
            return undefined;
@@ -70,7 +67,7 @@ function transAdjective(inAdj: string){
    // 형용사는 '다'로 끝남
    if(inAdj.endsWith("다")) {
        let transAdj = inAdj.slice(0, -1);
-       let lastChar = transAdj.charAt(transAdj.length - 1);
+       const lastChar = transAdj.charAt(transAdj.length - 1);
        // 하 변칙
        if (lastChar === "하"){
            transAdj = transAdj.slice(0, -1) + "한";
@@ -134,101 +131,48 @@ function transAdjective(inAdj: string){
 function transConnectedAdjective(inAdj: string){
    // 형용사는 '다'로 끝남
    if(inAdj.endsWith("다")) {
-       let transAdj = inAdj.slice(0, -1);
+       const transAdj = inAdj.slice(0, -1);
        return transAdj + "고";
    } else{
        return inAdj
    }
 }
 
-let splitHanDictDubeul: Record<string, string> = {
-   // 자음
-   "ㄱ": "r",
-   "ㄲ": "R",
-   "ㄳ": "rt",
-   "ㄴ": "s",
-   "ㄵ": "sw",
-   "ㄶ": "sg",
-   "ㄷ": "e",
-   "ㄸ": "E",
-   "ㄹ": "f",
-   "ㄺ": "fr",
-   "ㄻ": "fa",
-   "ㄼ": "fq",
-   "ㄽ": "ft",
-   "ㄾ": "fx",
-   "ㅀ": "fg",
-   "ㅁ": "a",
-   "ㅂ": "q",
-   "ㅃ": "Q",
-   "ㅄ": "qt",
-   "ㅅ": "t",
-   "ㅆ": "T",
-   "ㅇ": "d",
-   "ㅈ": "w",
-   "ㅉ": "W",
-   "ㅊ": "C",
-   "ㅋ": "z",
-   "ㅌ": "x",
-   "ㅍ": "v",
-   "ㅎ": "g",
-   // 모음
-   "ㅏ": "k",
-   "ㅐ": "o",
-   "ㅑ": "i",
-   "ㅒ": "O",
-   "ㅓ": "j",
-   "ㅔ": "p",
-   "ㅕ": "u",
-   "ㅖ": "P",
-   "ㅗ": "h",
-   "ㅘ": "hk",
-   "ㅙ": "ho",
-   "ㅚ": "hl",
-   "ㅛ": "y",
-   "ㅜ": "n",
-   "ㅝ": "nj",
-   "ㅞ": "np",
-   "ㅟ": "nl",
-   "ㅠ": "b",
-   "ㅡ": "m",
-   "ㅢ": "ml",
-   "ㅣ": "l"
-}
+import splitHanDictDubeol from '../dataset/KoreanDubeol2English.json'
 
 function Han2Eng(inStr: string){
    const hangulCombStart = "가".charCodeAt(0);
    const hangulCombEnd = "힣".charCodeAt(0);
    const hangulConsonentStart = "ㄱ".charCodeAt(0);
    const hangulVowelStart = "ㅏ".charCodeAt(0);
-   let out: string = "";
+   let out = "";
    for(let i = 0; i < inStr.length; ++i){
-       let ch = inStr.charAt(i);
-       if (splitHanDictDubeul[ch] !== undefined){
-           out += splitHanDictDubeul[ch];
+       const ch = inStr.charAt(i);
+       if (ch in splitHanDictDubeol){
+           out += splitHanDictDubeol[ch];
        } else {
-           let charCode = inStr.charCodeAt(i);
+           const charCode = inStr.charCodeAt(i);
            if ((charCode >= hangulCombStart) && (charCode <= hangulCombEnd)) {
-               let charCodeOffset = charCode - hangulCombStart;
+               const charCodeOffset = charCode - hangulCombStart;
 
                // 초성
-               let firstCodeIndex = Math.floor(charCodeOffset / (21 * 28));
-               let firstCode = firstCode2Consonant[firstCodeIndex] + hangulConsonentStart;
-               let firstChar = String.fromCharCode(firstCode);
-               out += splitHanDictDubeul[firstChar];
+               const firstCodeIndex = Math.floor(charCodeOffset / (21 * 28));
+               const firstCode = firstCode2Consonant[firstCodeIndex] + hangulConsonentStart;
+               const firstChar = String.fromCharCode(firstCode);
+               out += splitHanDictDubeol[firstChar];
 
                // 중성
-               let secondCode = Math.floor(charCodeOffset / 28) % 21 + hangulVowelStart;
-               let secondChar = String.fromCharCode(secondCode);
-               out += splitHanDictDubeul[secondChar];
+               const secondCode = Math.floor(charCodeOffset / 28) % 21 + hangulVowelStart;
+               const secondChar = String.fromCharCode(secondCode);
+               out += splitHanDictDubeol[secondChar];
 
                // 종성
-               let thirdIndex = charCodeOffset % 28;
+               const thirdIndex = charCodeOffset % 28;
                // 종성이 있는 경우
                if (thirdIndex > 0) {
-                   let thirdCode = thirdCode2Consonanat[thirdIndex - 1] + hangulConsonentStart;
-                   let thirdChar = String.fromCharCode(thirdCode);
-                   out += splitHanDictDubeul[thirdChar];
+                   const thirdCode = thirdCode2Consonanat[thirdIndex - 1] + hangulConsonentStart;
+                   const thirdChar = String.fromCharCode(thirdCode);
+                   out += splitHanDictDubeol[thirdChar];
                }
            }else{
                out += ch;
@@ -237,3 +181,5 @@ function Han2Eng(inStr: string){
    }
    return out;
 }
+
+export{splitKoreanPhoneme, mergeKoreanPhoneme, transAdjective, transConnectedAdjective, Han2Eng}
