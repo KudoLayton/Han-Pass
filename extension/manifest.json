@@ -1,0 +1,10 @@
+{
+    "name": "한글 비밀번호 생성기",
+    "version": "1.0",
+    "description": "한글로 이루어진 비밀번호를 생성하는 확장입니다.",
+    "permissions": ["activeTab"],
+    "browser_action": {
+      "default_popup": "popup.html"
+    },
+    "manifest_version": 2
+}
