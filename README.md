@@ -1,48 +1,39 @@
-# Svelte + TS + Vite
+# 한패: 한국어 비밀번호 생성기
 
-This template should help get you started developing with Svelte and TypeScript in Vite.
+해당 프로젝트는 한글 576돌을 (2022을 한글날) 기념하여 만든 개인 프로젝트입니다.
 
-## Recommended IDE Setup
+기억하기 쉬우면서도 강력한 보안을 유지하기 위해 단어들을 이용하여 비밀번호를 만들곤 합니다.
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+하지만 대부분의 비밀번호 관리 서비스들은 모두 영문 단어로 이루어져 있어서 기억하는데 어려움을 겪는다는 점을 해결하기 위해 개발하였습니다.
 
-## Need an official Svelte framework?
+## 사용법
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
+비밀번호 생성에 필요한 설정들을 추가하여 사용하면 됩니다.
+생성된 한글 비밀번호에 문자들을 (예. 숫자) 추가할 수 있습니다.
 
-## Technical considerations
+### 비밀번호 설정
+- 형용사 사용 여부
+  - 비밀번호에 형용사를 넣을지 여부를 설정합니다.
+  - 본 설정을 활성화할 경우 "형용사 여러 개 + 명사 1개"로 단어가 조합됩니다.
+  - 형용사를 사용하지 않을 경우 모든 단어가 명사로 지정됩니다.
 
-**Why use this over SvelteKit?**
+- 대문자 필수 여부
+  - 생성된 비밀번호에 반드시 대문자가 필요한지 여부를 설정합니다.
+  - 본 설정을 활성화할 경우 생성된 영문 비밀번호에 대문자가 들어갈 때까지 비밀번호를 재생성합니다.
 
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
-  `vite dev` and `vite build` wouldn't work in a SvelteKit environment, for example.
+- 단어 개수
+  - 총 단어 수를 설정합니다.
 
-This template contains as little as possible to get started with Vite + TypeScript + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
+- 구분 문자
+  - 단어 사이를 구분하는 특수문자를 설정합니다.
 
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
+## 사용 자료관 (Library)
+- 로고 폰트
+  - [Neo 둥근모](https://neodgm.dalgona.dev/)
+- 한글 단어 목록
+  - [한국어 학습용 어휘 목록 (2003), 국립국어원](https://www.korean.go.kr/front/etcData/etcDataView.do?mn_id=46&etc_seq=71)
+- css
+  - [Milligram](https://milligram.io/)
 
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
-
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
-
-**Why include `.vscode/extensions.json`?**
-
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
-
-**Why enable `allowJs` in the TS template?**
-
-While `allowJs: false` would indeed prevent the use of `.js` files in the project, it does not prevent the use of JavaScript syntax in `.svelte` files. In addition, it would force `checkJs: false`, bringing the worst of both worlds: not being able to guarantee the entire codebase is TypeScript, and also having worse typechecking for the existing JavaScript. In addition, there are valid use cases in which a mixed codebase may be relevant.
-
-**Why is HMR not preserving my local component state?**
-
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/rixo/svelte-hmr#svelte-hmr).
-
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
-
-```ts
-// store.ts
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
-```
+## 허가서 (License)
+본 저작물은 MIT 허가서를 따르고 있습니다.
