@@ -1,5 +1,4 @@
 <script lang="ts">
-
                                        //ㄱ,ㄲ,ㄴ,ㄷ,ㄸ,ㄹ, ㅁ, ㅂ, ㅃ, ㅅ, ㅆ,  o,  ㅈ, ㅉ, ㅊ, ㅋ, ㅌ,  ㅍ, ㅎ
     let firstCode2Consonant: number[] = [0, 1, 3, 6, 7, 8, 16, 17, 18, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
                                         //ㄱ ㄲ ㄳ ㄴ ㄵ ㄶ  ㄷ ㄹ ㄺ  ㄻ  ㄼ  ㄽ  ㄾ  ㄿ   ㅀ  ㅁ  ㅂ  ㅄ  ㅅ  ㅆ   ㅇ  ㅈ  ㅊ  ㅋ  ㅌ  ㅍ   ㅎ
@@ -9,6 +8,7 @@
     const hangulConsonentStart = "ㄱ".charCodeAt(0);
     const hangulVowelStart = "ㅏ".charCodeAt(0);
 
+    // 음운 단위로 분리
     function splitKoreanPhoneme (inChar: string){
 
         let out: string = "";
@@ -43,6 +43,7 @@
         return out;
     }
 
+    // 분리된 음운을 다시 결합
     function mergeKoreanPhoneme (inStr: string){
         const checkPhonemeRegex = new RegExp(/^[ㄱ-ㅎ][ㅏ-ㅣ][ㄱ-ㅎ]*$/g);
         if(checkPhonemeRegex.exec(inStr)){
@@ -63,8 +64,9 @@
         }
     }
 
+    // 형용사를 '은'/'는' 어미로 변형
     function transAdjective(inAdj: string){
-        const directUnCharacters = ["곧", "굳", "좋", "좁"];
+        // 형용사는 '다'로 끝남
         if(inAdj.endsWith("다")) {
             let transAdj = inAdj.slice(0, -1);
             let lastChar = transAdj.charAt(transAdj.length - 1);
@@ -73,6 +75,8 @@
                 transAdj = transAdj.slice(0, -1) + "한";
             }
             else {
+                // 아래 변칙을 따르지 않고 바로 '은'을 붙이는 경우
+                const directUnCharacters = ["곧", "굳", "좋", "좁"];
                 if (directUnCharacters.includes(lastChar)){
                     return transAdj + "은";
                 }
@@ -120,6 +124,17 @@
                 }
             }
             return transAdj;
+        } else{
+            return inAdj
+        }
+    }
+
+        // 형용사를 '고' 어미로 변형
+        function transConnectedAdjective(inAdj: string){
+        // 형용사는 '다'로 끝남
+        if(inAdj.endsWith("다")) {
+            let transAdj = inAdj.slice(0, -1);
+            return transAdj + "고";
         } else{
             return inAdj
         }
@@ -230,7 +245,7 @@
 
     import KoreanDict from '../dataset/KoreanWords.json'
     KoreanDict["adjective"].forEach(element => {
-        console.log('%s -> %s', element, transAdjective(element));
+        console.log('%s -> %s', element, transConnectedAdjective(element));
     });
 </script>
 
