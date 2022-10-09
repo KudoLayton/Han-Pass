@@ -39,13 +39,70 @@
         return wordList.join(joinStr);
     }
 
-    let testStr = "아무거나";
-    const testCase = () => {
-         //testStr = RandomHanAdjsNouns(2, "-");
-         testStr = Han2Eng("가");
+    let isUseAdjective = false;
+    let isCapitalEssential = false;
+    let wordNum = 1;
+    let spaceStr = "-";
+    let generatedHangulPasswd = "";
+    let generatedEnglishPasswd = "";
+
+    function switchIsUseAdjective(){
+        isUseAdjective = !isUseAdjective;
+        generateHangulPasswd();
+    }
+
+    function switchIsCapitalEssential(){
+        isCapitalEssential = !isCapitalEssential;
+        generateHangulPasswd();
+    }
+
+    function generateHangulPasswd(){
+        const checkCapital = new RegExp(/.*[A-Z].*/g);
+        let isCapital = false;
+        let isLoop = false;
+        console.log("request generate passwd");
+        do{
+            if (isUseAdjective && wordNum > 1){
+                generatedHangulPasswd = RandomHanAdjsNouns(wordNum - 1, spaceStr);
+            } else {
+                generatedHangulPasswd = RandomHanNouns(wordNum, spaceStr);
+            }
+            transformHangul2English();
+            isCapital = checkCapital.exec(generatedEnglishPasswd) !== null;
+            isLoop = isCapitalEssential && (!isCapital);
+        } while(isLoop);
+    }
+
+    function transformHangul2English(){
+        generatedEnglishPasswd = Han2Eng(generatedHangulPasswd);
     }
 </script>
 
-<button on:click={testCase}>
-    {testStr}
+<div>
+<button class="button" class:button-outline={!isUseAdjective} on:click={switchIsUseAdjective}>
+    {#if isUseAdjective}
+    형용사 사용
+    {:else}
+    형용사 사용 안함
+    {/if}
 </button>
+<button class="button" class:button-outline={!isCapitalEssential} on:click={switchIsCapitalEssential}>
+    {#if isCapitalEssential}
+    대문자 필수
+    {:else}
+    대문자 필수 아님
+    {/if}
+</button>
+</div>
+<label for="wordNumInput">단어 개수</label>
+<input type="number" min="1" id="wordNumInput" bind:value={wordNum} on:change={generateHangulPasswd}>
+<label for="spaceStrInput">공백 문자</label>
+<input type="text" id="spaceStrInput" bind:value={spaceStr} on:change={generateHangulPasswd}>
+<button class="button" on:click={generateHangulPasswd}>생성</button>
+<label for="hanPasswd">생성 한글 비밀번호 (편집 가능)</label>
+<input type="text" id="hanPasswd" bind:value={generatedHangulPasswd} on:change={transformHangul2English}>
+<div>
+<label for="engPasswd">생성 영문 비밀번호</label>
+<pre><code id="engPasswd">{generatedEnglishPasswd}</code></pre>
+<button class="button">비밀번호 복사</button>
+</div>
