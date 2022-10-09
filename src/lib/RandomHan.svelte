@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {splitKoreanPhoneme, mergeKoreanPhoneme, transAdjective, transConnectedAdjective, Han2Eng} from './KoreanUtils'
+    import {transAdjective, transConnectedAdjective, Han2Eng} from './KoreanUtils'
     import hangulDict from '../dataset/KoreanWords.json'
     function RandomHanNouns(wordsNum: number, joinStr: string){
         let nounList: string[] = [];
@@ -76,8 +76,13 @@
     function transformHangul2English(){
         generatedEnglishPasswd = Han2Eng(generatedHangulPasswd);
     }
+
+    function copyPasswd(){
+        navigator.clipboard.writeText(generatedEnglishPasswd);
+    }
 </script>
 
+<h2>비밀번호 설정</h2>
 <div>
 <button class="button" class:button-outline={!isUseAdjective} on:click={switchIsUseAdjective}>
     {#if isUseAdjective}
@@ -99,10 +104,11 @@
 <label for="spaceStrInput">공백 문자</label>
 <input type="text" id="spaceStrInput" bind:value={spaceStr} on:change={generateHangulPasswd}>
 <button class="button" on:click={generateHangulPasswd}>생성</button>
+<h2>생성 비밀번호</h2>
 <label for="hanPasswd">생성 한글 비밀번호 (편집 가능)</label>
 <input type="text" id="hanPasswd" bind:value={generatedHangulPasswd} on:change={transformHangul2English}>
 <div>
 <label for="engPasswd">생성 영문 비밀번호</label>
 <pre><code id="engPasswd">{generatedEnglishPasswd}</code></pre>
-<button class="button">비밀번호 복사</button>
+<button class="button" on:click={copyPasswd}>비밀번호 복사</button>
 </div>
